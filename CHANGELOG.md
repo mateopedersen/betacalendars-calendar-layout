@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 — 2026-10-07
+
+- Add the `betacal` executable while keeping `betacal-layout` available as a compatibility command.
+- Add `inspect` output for year length and the December-to-January weekday transition.
+- Derive the CLI version from the CMake project version and test the year-boundary command.
+
 ## 0.1.1 — 2026-10-07
 
 - Add offline month, year, blank-grid, paper, compare, validation, and version CLI commands.

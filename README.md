@@ -1,8 +1,8 @@
-# BetaCalendars Calendar Layout
+# BetaCalendars Calendar Toolkit
 
 [![Copr build status](https://copr.fedorainfracloud.org/coprs/mateopedersen/betacalendars-calendar-layout/package/betacalendars-calendar-layout/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/mateopedersen/betacalendars-calendar-layout/package/betacalendars-calendar-layout/)
 
-**BetaCalendars Calendar Layout** is a dependency-free C++17 library for proleptic Gregorian month structure, calendar grids, blank planner grids, and physical page geometry. The project is maintained by [Beta Calendars](https://www.betacalendars.com/).
+**BetaCalendars Calendar Toolkit** combines the dependency-free C++17 calendar-layout library with `betacal`, an offline command-line tool for Gregorian calendar grids, year-boundary inspection, blank planners, and print geometry. The project is maintained by [Beta Calendars](https://www.betacalendars.com/).
 
 The engine works offline. It uses civil dates rather than timestamps, so results do not depend on locale, timezone, daylight-saving rules, network services, or website content.
 
@@ -38,19 +38,21 @@ The CLI and tests are optional CMake components and are both enabled for the RPM
 
 ## Command-line toolkit
 
-The `betacal-layout` executable works offline and supports text, JSON, CSV, and
-SVG where the output is meaningful:
+The `betacal` executable works offline and supports text, JSON, CSV, and SVG
+where the output is meaningful. The original `betacal-layout` command remains
+available for existing package users:
 
 ```sh
-betacal-layout version
-betacal-layout month --year 2027 --month 1 --week-start monday --grid natural
-betacal-layout month --year 2027 --month 1 --week-start sunday --grid fixed --format json
-betacal-layout month --year 2027 --month 1 --format svg --output january.svg
-betacal-layout year --year 2027 --format csv
-betacal-layout blank --rows 6 --paper a4 --orientation landscape --format svg
-betacal-layout paper --paper letter --orientation portrait --format json
-betacal-layout compare --rows 6 --format csv
-betacal-layout validate --from-year 1900 --to-year 2100
+betacal version
+betacal month --year 2027 --month 1 --week-start monday --grid natural
+betacal month --year 2027 --month 12 --week-start sunday --grid fixed --format json
+betacal month --year 2027 --month 1 --format svg --output january.svg
+betacal year --year 2027 --format csv
+betacal blank --rows 6 --paper a4 --orientation landscape --format svg
+betacal paper --paper letter --orientation portrait --format json
+betacal compare --rows 6 --format csv
+betacal inspect --year 2026 --format json
+betacal validate --from-year 1900 --to-year 2100
 ```
 
 Month output includes the selected week origin and either the natural row
@@ -103,6 +105,11 @@ The computed month-by-month weekday and row-count table, with visual references,
 ## 2026–2027 regression window
 
 The four-month boundary fixture and its calculated grid behavior are documented in [docs/boundary-2026-2027.md](docs/boundary-2026-2027.md).
+
+`inspect` reports the year length, leap-year status, the weekday transition from
+December 31 to the following January 1, and a seven-day date window around that
+boundary. It accepts text, JSON, and CSV output; the next year must be within the
+supported 1–9999 civil-date range.
 
 ## Validation
 
