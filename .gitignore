@@ -1,0 +1,7 @@
+/build/
+/consumer-build/
+/stage/
+/install/
+*.user
+*.suo
+.DS_Store

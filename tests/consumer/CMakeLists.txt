@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(CalendarLayoutConsumer LANGUAGES CXX)
+find_package(BetaCalendarsCalendarLayout CONFIG REQUIRED)
+add_executable(calendar-layout-consumer main.cpp)
+target_link_libraries(calendar-layout-consumer PRIVATE BetaCalendars::CalendarLayout)
