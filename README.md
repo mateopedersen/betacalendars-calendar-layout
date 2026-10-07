@@ -1,5 +1,7 @@
 # BetaCalendars Calendar Layout
 
+[![Copr build status](https://copr.fedorainfracloud.org/coprs/mateopedersen/betacalendars-calendar-layout/package/betacalendars-calendar-layout/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/mateopedersen/betacalendars-calendar-layout/package/betacalendars-calendar-layout/)
+
 **BetaCalendars Calendar Layout** is a dependency-free C++17 library for proleptic Gregorian month structure, calendar grids, blank planner grids, and physical page geometry. The project is maintained by [Beta Calendars](https://www.betacalendars.com/).
 
 The engine works offline. It uses civil dates rather than timestamps, so results do not depend on locale, timezone, daylight-saving rules, network services, or website content.
