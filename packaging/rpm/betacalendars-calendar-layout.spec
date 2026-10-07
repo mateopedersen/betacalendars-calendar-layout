@@ -1,5 +1,5 @@
 Name:           betacalendars-calendar-layout
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Deterministic Gregorian calendar grids and print geometry
 License:        MIT
@@ -67,5 +67,5 @@ cmake --build consumer-build --parallel
 %doc README.md CHANGELOG.md CONTRIBUTING.md docs/ tests/fixtures/
 
 %changelog
-* Wed Oct 07 2026 Mateo Pedersen <mateopedersen@users.noreply.github.com> - 0.1.0-1
-- Initial Fedora Copr package.
+* Wed Oct 07 2026 Mateo Pedersen <mateopedersen@users.noreply.github.com> - 0.1.1-1
+- Add offline calendar and print-layout toolkit and Fedora packaging.
