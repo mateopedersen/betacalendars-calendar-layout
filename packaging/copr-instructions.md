@@ -22,13 +22,14 @@ sudo dnf install betacalendars-calendar-layout-docs
 ## Quick start
 
 ```sh
-betacal-layout --version
-betacal-layout month --year 2027 --month 1 --week-start monday --grid natural
-betacal-layout blank --rows 6 --paper a4 --orientation landscape --format svg --output planner.svg
-betacal-layout validate --from-year 1900 --to-year 2100
+betacal --version
+betacal month --year 2027 --month 1 --week-start monday --grid natural
+betacal blank --rows 6 --paper a4 --orientation landscape --format svg --output planner.svg
+betacal inspect --year 2026 --format json
+betacal validate --from-year 1900 --to-year 2100
 ```
 
-The `month`, `year`, `blank`, `paper`, `compare`, and `validate` commands emit
+The `month`, `year`, `blank`, `paper`, `compare`, `inspect`, and `validate` commands emit
 text, JSON, or CSV; month and blank grids also emit printable SVG. All
 calculations run locally without network access.
 

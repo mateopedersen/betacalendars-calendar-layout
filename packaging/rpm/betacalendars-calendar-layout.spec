@@ -1,5 +1,5 @@
 Name:           betacalendars-calendar-layout
-Version:        0.1.3
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Deterministic Gregorian calendar grids and print geometry
 License:        MIT
@@ -55,6 +55,7 @@ cmake --build consumer-build --parallel
 
 %files
 %license LICENSE
+%{_bindir}/betacal
 %{_bindir}/betacal-layout
 
 %files devel
@@ -67,6 +68,9 @@ cmake --build consumer-build --parallel
 %doc README.md CHANGELOG.md CONTRIBUTING.md docs/ tests/fixtures/
 
 %changelog
+* Wed Oct 07 2026 Mateo Pedersen <mateopedersen@users.noreply.github.com> - 0.2.0-1
+- Add the betacal command and year-boundary inspection.
+
 * Wed Oct 07 2026 Mateo Pedersen <mateopedersen@users.noreply.github.com> - 0.1.3-1
 - Install the downstream test fixture outside RPM BUILDROOT.
 
