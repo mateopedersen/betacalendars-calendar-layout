@@ -24,6 +24,12 @@ if(BETACALENDARS_BUILD_TOOLS)
   add_executable(betacal-layout tools/betacal-layout.cpp)
   target_link_libraries(betacal-layout PRIVATE BetaCalendars::CalendarLayout)
   install(TARGETS betacal-layout RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  if(BETACALENDARS_BUILD_TESTS)
+    add_test(NAME cli-version COMMAND betacal-layout --version)
+    add_test(NAME cli-january-2027 COMMAND betacal-layout month --year 2027 --month 1 --week-start monday --grid natural --format json)
+    add_test(NAME cli-blank-a4 COMMAND betacal-layout blank --rows 6 --paper a4 --orientation landscape --format svg)
+    add_test(NAME cli-exhaustive-validation COMMAND betacal-layout validate --from-year 1900 --to-year 2100)
+  endif()
 endif()
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
@@ -39,4 +45,3 @@ write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/BetaCalendarsCalend
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BetaCalendarsCalendarLayoutConfig.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/BetaCalendarsCalendarLayoutConfigVersion.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BetaCalendarsCalendarLayout)
-install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATADIR}/licenses/${PROJECT_NAME})

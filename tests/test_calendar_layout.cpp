@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstddef>
+#include <array>
 static std::size_t checks=0;
 #define CHECK(expression) do { ++checks; if(!(expression)) { std::cerr << "CHECK failed at " << __FILE__ << ':' << __LINE__ << ": " #expression << '\n'; return 1; } } while(false)
 using namespace betacalendars::calendar_layout;
@@ -36,6 +37,40 @@ int main() {
     }
     CHECK(sum==(is_leap_year(y)?366:365));
   }
+  // Exercise materialized cells for every month/week origin in the requested
+  // 1900–2100 package-validation window, in both natural and fixed modes.
+  for(int y=1900;y<=2100;++y) for(int m=1;m<=12;++m) for(int s=0;s<7;++s) {
+    const auto start=static_cast<week_start>(s);
+    auto natural=month_grid(y,m,start,grid_mode::natural,adjacent_policy::include_adjacent_dates);
+    auto fixed=month_grid(y,m,start,grid_mode::fixed_six_weeks,adjacent_policy::include_adjacent_dates);
+    CHECK(natural&&fixed);
+    CHECK(natural.value().size()==static_cast<std::size_t>(topology(y,m,start).natural_rows*7));
+    CHECK(fixed.value().size()==42);
+    int natural_days=0,fixed_days=0;
+    std::array<bool,32> natural_seen{},fixed_seen{};
+    for(const auto& cell:natural.value()) if(cell.relation==cell_relation::current_month) {
+      CHECK(cell.date&&cell.date->year==y&&cell.date->month==m);
+      CHECK(cell.date->day>=1&&cell.date->day<=31);
+      CHECK(!natural_seen[static_cast<std::size_t>(cell.date->day)]);
+      natural_seen[static_cast<std::size_t>(cell.date->day)]=true;
+      ++natural_days;
+    }
+    for(const auto& cell:fixed.value()) if(cell.relation==cell_relation::current_month) {
+      CHECK(cell.date&&cell.date->year==y&&cell.date->month==m);
+      CHECK(!fixed_seen[static_cast<std::size_t>(cell.date->day)]);
+      fixed_seen[static_cast<std::size_t>(cell.date->day)]=true;
+      ++fixed_days;
+    }
+    CHECK(topology(y,m,start).leading_cells>=0&&topology(y,m,start).leading_cells<7);
+    CHECK(natural_days==days_in_month(y,m));
+    CHECK(fixed_days==days_in_month(y,m));
+    for(int d=1;d<=days_in_month(y,m);++d) CHECK(natural_seen[static_cast<std::size_t>(d)]&&fixed_seen[static_cast<std::size_t>(d)]);
+  }
+  int days_2027=0;for(int month=1;month<=12;++month)days_2027+=days_in_month(2027,month);
+  CHECK(days_2027==365&&days_in_month(2027,2)==28);
+  CHECK(days_in_month(2026,11)==30&&days_in_month(2026,12)==31);
+  CHECK(weekday_of({2026,12,31})==weekday::thursday&&weekday_of({2027,1,1})==weekday::friday);
+  CHECK(weekday_of({2027,1,1})==static_cast<weekday>((weekday_index(weekday_of({2026,12,31}))+1)%7));
   const int known_2027_rows[12][2]={{5,6},{4,5},{5,5},{5,5},{6,6},{5,5},{5,5},{6,5},{5,5},{5,6},{5,5},{5,5}};
   for(int m=1;m<=12;++m){CHECK(topology(2027,m,week_start::monday).natural_rows==known_2027_rows[m-1][0]);CHECK(topology(2027,m,week_start::sunday).natural_rows==known_2027_rows[m-1][1]);}
   for(int m=11;m<=12;++m){auto g=month_grid(2026,m,week_start::monday);CHECK(g&&g.value().size()==static_cast<std::size_t>(topology(2026,m).natural_rows*7));}

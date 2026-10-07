@@ -18,8 +18,10 @@ The engine works offline. It uses civil dates rather than timestamps, so results
 Build and install from a source checkout:
 
 ```sh
-cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$PWD/install"
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$PWD/install" \
+  -DBETACALENDARS_BUILD_TESTS=ON -DBETACALENDARS_BUILD_TOOLS=ON
 cmake --build build
+ctest --test-dir build --output-on-failure
 cmake --install build
 ```
 
@@ -30,7 +32,31 @@ find_package(BetaCalendarsCalendarLayout CONFIG REQUIRED)
 target_link_libraries(myapp PRIVATE BetaCalendars::CalendarLayout)
 ```
 
-The CLI is optional (`-DBETACALENDARS_BUILD_TOOLS=ON`). The test suite is opt-in (`-DBETACALENDARS_BUILD_TESTS=ON`).
+The CLI and tests are optional CMake components and are both enabled for the RPM build.
+
+## Command-line toolkit
+
+The `betacal-layout` executable works offline and supports text, JSON, CSV, and
+SVG where the output is meaningful:
+
+```sh
+betacal-layout version
+betacal-layout month --year 2027 --month 1 --week-start monday --grid natural
+betacal-layout month --year 2027 --month 1 --week-start sunday --grid fixed --format json
+betacal-layout month --year 2027 --month 1 --format svg --output january.svg
+betacal-layout year --year 2027 --format csv
+betacal-layout blank --rows 6 --paper a4 --orientation landscape --format svg
+betacal-layout paper --paper letter --orientation portrait --format json
+betacal-layout compare --rows 6 --format csv
+betacal-layout validate --from-year 1900 --to-year 2100
+```
+
+Month output includes the selected week origin and either the natural row
+count or a fixed 42-cell grid. Paper sizes are A4 (210×297 mm), A5 (148×210
+mm), US Letter (215.9×279.4 mm), and US Legal (215.9×355.6 mm); orientation
+can be portrait or landscape. `--margin`, `--header`, `--weekday-header`,
+`--notes`, and `--cell-padding` accept millimetres. Invalid or non-positive
+printable layouts fail with a diagnostic instead of emitting unusable geometry.
 
 ## Quick start
 
@@ -65,7 +91,8 @@ Natural grids use the minimum number of whole weeks required for the month. They
 
 ## Blank grids
 
-`measure_blank` computes undated geometry directly. It creates no dates: pass 5×7, 6×7, or other positive dimensions. This is distinct from removing labels from a dated calendar.
+`measure_blank` computes undated geometry directly. The CLI supports date-free
+5×7 and 6×7 layouts. This is distinct from removing labels from a dated calendar.
 
 ## 2027 structural atlas
 
@@ -77,7 +104,21 @@ The four-month boundary fixture and its calculated grid behavior are documented 
 
 ## Validation
 
-Configure with `-DBETACALENDARS_BUILD_TESTS=ON`, then build and run CTest. The test program checks Gregorian year lengths and month topology for every year from 1 through 9999, all seven starts, paper dimensions, known weekday cases, and the boundary fixtures.
+Configure with `-DBETACALENDARS_BUILD_TESTS=ON`, then build and run CTest. The
+test program checks Gregorian year lengths and month topology for every year
+from 1 through 9999, plus materialized natural and fixed grids for every month
+and week start from 1900 through 2100. It checks date uniqueness/completeness,
+leap-year cases, paper dimensions, known weekday cases, the 2027 365-day atlas,
+and the 2026–2027 year boundary. When tools are enabled, CTest also runs CLI
+smoke checks and the exhaustive validation command.
+
+## Fedora RPM packages
+
+The source tree includes a Fedora Copr spec that builds the runtime CLI,
+development headers/CMake package, and offline documentation. The public
+repository and current DNF enable/install commands are listed on the Copr
+project page. The RPM is built from the tagged source release and runs CTest in
+the Fedora builder.
 
 ## Human-readable calendar references
 

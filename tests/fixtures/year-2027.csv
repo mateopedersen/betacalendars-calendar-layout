@@ -1,0 +1,14 @@
+year,month,days,first_weekday,week_start,offset,natural_rows
+2027,1,31,Friday,Monday,4,5
+2027,2,28,Monday,Monday,0,4
+2027,3,31,Monday,Monday,0,5
+2027,4,30,Thursday,Monday,3,5
+2027,5,31,Saturday,Monday,5,6
+2027,6,30,Tuesday,Monday,1,5
+2027,7,31,Thursday,Monday,3,5
+2027,8,31,Sunday,Monday,6,6
+2027,9,30,Wednesday,Monday,2,5
+2027,10,31,Friday,Monday,4,5
+2027,11,30,Monday,Monday,0,5
+2027,12,31,Wednesday,Monday,2,5
+
