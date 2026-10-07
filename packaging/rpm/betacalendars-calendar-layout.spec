@@ -1,5 +1,5 @@
 Name:           betacalendars-calendar-layout
-Version:        0.1.2
+Version:        0.1.3
 Release:        1%{?dist}
 Summary:        Deterministic Gregorian calendar grids and print geometry
 License:        MIT
@@ -43,7 +43,7 @@ year-boundary documentation for BetaCalendars Calendar Layout.
 %ctest --output-on-failure
 
 # Verify the installed CMake package can be consumed downstream.
-%cmake_install --prefix %{_builddir}/betacalendars-consumer-stage
+cmake --install %{_vpath_builddir} --prefix %{_builddir}/betacalendars-consumer-stage
 cmake -S tests/consumer -B consumer-build -G Ninja \
   -DCMAKE_PREFIX_PATH=%{_builddir}/betacalendars-consumer-stage \
   -DCMAKE_BUILD_TYPE=Release
@@ -67,6 +67,9 @@ cmake --build consumer-build --parallel
 %doc README.md CHANGELOG.md CONTRIBUTING.md docs/ tests/fixtures/
 
 %changelog
+* Wed Oct 07 2026 Mateo Pedersen <mateopedersen@users.noreply.github.com> - 0.1.3-1
+- Install the downstream test fixture outside RPM BUILDROOT.
+
 * Wed Oct 07 2026 Mateo Pedersen <mateopedersen@users.noreply.github.com> - 0.1.2-1
 - Use Fedora's out-of-source CMake build directory for tests and install.
 
