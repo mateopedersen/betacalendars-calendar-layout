@@ -16,7 +16,7 @@ jobs:
         build_type: [Release]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Configure
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBETACALENDARS_BUILD_TESTS=ON -DBETACALENDARS_BUILD_TOOLS=ON -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/stage
       - name: Build
